@@ -1,7 +1,17 @@
+## Python Specific Data Structures
+
+Data structures are specific to python language and they give greater flexibility in storing different types of data and faster processing in python environment.
+
+-   **List**  − It is similar to array with the exception that the data elements can be of different data types. You can have both numeric and string data in a python list.
+    
+-   **Tuple**  − Tuples are similar to lists but they are immutable which means the values in a tuple cannot be modified they can only be read.
+    
+-   **Dictionary**  − The dictionary contains Key-value pairs as its data elements.
+
 
 ### Liner Data Structures
 
-These are the data structures which store the data elements in a sequential manner.
+Data structures which store the data elements in a sequential manner.
 
 -   **Array**  − It is a sequential arrangement of data elements paired with the index of the data element.
     
@@ -16,7 +26,7 @@ These are the data structures which store the data elements in a sequential mann
 
 ### Non-Liner Data Structures
 
-These are the data structures in which there is no sequential linking of data elements. Any pair or group of data elements can be linked to each other and can be accessed without a strict sequence.
+Data structures in which there is no sequential linking of data elements. Any pair or group of data elements can be linked to each other and can be accessed without a strict sequence.
 
 -   **Binary Tree**  − It is a data structure where each data element can be connected to maximum two other data elements and it starts with a root node.
     
@@ -26,16 +36,3 @@ These are the data structures in which there is no sequential linking of data el
     
 -   **Graph**  − It is an arrangement of vertices and nodes where some of the nodes are connected to each other through links.
     
-
-## Python Specific Data Structures
-
-These data structures are specific to python language and they give greater flexibility in storing different types of data and faster processing in python environment.
-
--   **List**  − It is similar to array with the exception that the data elements can be of different data types. You can have both numeric and string data in a python list.
-    
--   **Tuple**  − Tuples are similar to lists but they are immutable which means the values in a tuple cannot be modified they can only be read.
-    
--   **Dictionary**  − The dictionary contains Key-value pairs as its data elements.
-    
-
-In the next chapters we are going to learn the details of how each of these data structures can be implemented using Python.

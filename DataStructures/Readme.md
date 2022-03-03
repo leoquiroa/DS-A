@@ -35,4 +35,8 @@ Data structures in which there is no sequential linking of data elements. Any pa
 -   **Hash Table**  − It is a data structure which is made of arrays associated with each other using a hash function. It retrieves values using keys rather than index from a data element.
     
 -   **Graph**  − It is an arrangement of vertices and nodes where some of the nodes are connected to each other through links.
-    
+
+
+**Bibliography**
+
+- https://www.tutorialspoint.com/python_data_structure

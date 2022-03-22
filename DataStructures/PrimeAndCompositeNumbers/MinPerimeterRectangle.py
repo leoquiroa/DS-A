@@ -6,8 +6,7 @@ def solution(N):
     squareRootN = int(squareRootN) 
     factor = 0
     perimeter = 0
-    minPerimeter = 90972904
-    
+    minPerimeter = 9097290499
     
     if math.pow(squareRootN, 2) != N:
         #round up for any non-perfect squares

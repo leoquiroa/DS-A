@@ -1,3 +1,6 @@
+from re import X
+
+
 def solution(A):
     # write your code in Python 3.6
     #A.sort()
@@ -20,3 +23,5 @@ if __name__ == '__main__':
     A.append([2, 1, 4, 7, 4, 8, 3, 6, 4, 7])
     for a in A:
         print(a,solution(a))
+
+

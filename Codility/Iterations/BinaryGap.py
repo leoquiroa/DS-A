@@ -11,6 +11,7 @@ def solution(n):
     for e in line:
         if e == 1:
             paral = True
+            
             if counter > 0:
                 gaps.append(counter)
                 counter = 0

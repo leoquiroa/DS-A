@@ -21,7 +21,6 @@ if __name__ == '__main__':
     R.append(["abcdefghijklmNOPQRSTUVWXYZ0123456789",39]) #nopqrstuvwxyzABCDEFGHIJKLM9012345678
     R.append(["All-convoYs-9-be:Alert1.",4]) #"Epp-gsrzsCw-3-fi:Epivx5."
     R.append(["abcdZXYzxy-999.@",200]) #stuvRPQrpq-999.@
-    R.append(["agoda",5]) # eafcobok
     for r in R:
         print(rotationalCipher(r[0], r[1]))
         

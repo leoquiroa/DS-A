@@ -2,6 +2,5 @@ __pycache__
 *.gzip
 *.parquet
 *.parquet.gzip
-df.parquet.gzip
 /output_data/
 *.csv

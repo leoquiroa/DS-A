@@ -13,21 +13,23 @@ class DfOperations:
         return df
 
     def merge(self,df_base,df_current):
-        df_insert = df_current[df_current['operation'] == 'INSERT']
-        del df_insert['operation']
+        df_insert = self.prepare_df(df_current,'INSERT')
         self.verify_columns(df_base,df_insert)
         df_insert = self.remove_repetions(df_insert)
         print(f"{self.run_guid} - {len(df_insert)} rows are going to be inserted")
         df_base = self.ddloperations.insert(df_base,df_insert)
-        df_update = df_current[df_current['operation'] == 'UPDATE']
-        del df_update['operation']
+        df_update = self.prepare_df(df_current,'UPDATE')
         print(f"{self.run_guid} - {len(df_update)} rows are going to be updated")
         df_base = self.ddloperations.update(df_base,df_update)
-        df_delete = df_current[df_current['operation'] == 'DELETE']
-        del df_delete['operation']
+        df_delete = self.prepare_df(df_current,'DELETE')
         print(f"{self.run_guid} - {len(df_delete)} rows are going to be deleted")
         df_base = self.ddloperations.delete(df_base,df_delete)
         return df_base
+
+    def prepare_df(self,df_current,operation):
+        df_operation = df_current[df_current['operation'] == operation]
+        del df_operation['operation']
+        return df_operation
 
     def verify_columns(self,df_base,df_insert):
         a = set(df_base.columns)
@@ -43,14 +45,15 @@ class DfOperations:
             print(f"{self.run_guid} - The new columns from the new df are {len(new_columns)} : {new_columns}")
 
     def remove_repetions(self,df_insert):
-        df_count = df_insert.groupby(['order_id'])['order_id'].size().reset_index(name='counts')
-        if len(df_count[df_count['counts']>1])==0: return df_insert
+        df_local = df_insert.copy()
+        df_count = df_local.groupby(['order_id'])['order_id'].size().reset_index(name='counts')
+        if len(df_count[df_count['counts']>1])==0: return df_local
         repetitions = list(df_count[df_count['counts']>1]['order_id'])
         for element in repetitions:
-            filtered = df_insert[df_insert['order_id']==element]['order_updated_at']
+            filtered = df_local[df_local['order_id']==element]['order_updated_at']
             del_ix = [x for x in list(filtered.index) if x != filtered.idxmax()]
             print(f"{self.run_guid} - Remove repeated order {element}")
-            df_insert.drop(del_ix, axis=0, inplace=True)
-        return df_insert
+            df_local.drop(del_ix, axis=0, inplace=True)
+        return df_local
 
     

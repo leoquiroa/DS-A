@@ -18,7 +18,7 @@ class DfOperations:
         df_insert = self.is_not_in(df_current,list_intersect)
         df_base = self.ddloperations.insert(df_base,df_insert)
         df_base = self.ddloperations.update(df_base,df_update)
-        df_base = self.ddloperations.update(df_base,df_delete)
+        df_base = self.ddloperations.delete(df_base,df_delete)
         return df_base
 
     def get_intesection(self,df_base, df_current):

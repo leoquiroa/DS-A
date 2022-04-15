@@ -6,7 +6,6 @@ class DfOperations:
         self.fileops = fileops
 
     def column_date_conversion(self,df,cols):
-        # change column type to date time
         for col in cols:
             if col in df.columns: 
                 df[col] =  pd.to_datetime(df[col])

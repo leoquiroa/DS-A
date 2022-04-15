@@ -1,5 +1,6 @@
 from file_operations import FileOperations
 from csv_processor import CsvProcessor
+import uuid
 
 if __name__ == '__main__':
     # input parameters
@@ -14,8 +15,9 @@ if __name__ == '__main__':
     final_file = "df.parquet.gzip"
     operations = ['INSERT','UPDATE','DELETE']
     date_cols = ['order_updated_at']
+    run_guid = uuid.uuid4()
     # file operations
-    fileops = FileOperations(folder_input,folder_output,final_file)
+    fileops = FileOperations(folder_input,folder_output,final_file,run_guid)
     fileops.check_folders()
     processor = CsvProcessor(fileops,operations)
     processor.base_file(all_files[0],date_cols)

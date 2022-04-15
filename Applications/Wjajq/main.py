@@ -1,25 +1,18 @@
-from file_operations import FileOperations
+#from file_operations import FileOperations
 from csv_processor import CsvProcessor
-import uuid
 
 if __name__ == '__main__':
-    # input parameters
-    all_files = [
-        'Homework task @ Initial Data.csv'
-        ,'Homework task @ CDC 2021-06-17.csv'
+    initial_file = 'Homework task @ Initial Data.csv'
+    other_files = [
+        'Homework task @ CDC 2021-06-17.csv'
         ,'Homework task @ CDC 2021-06-18.csv'
         ,'Homework task @ CDC 2021-06-19.csv'
     ]
     folder_input = "input_data"
     folder_output = "output_data"
     final_file = "df.parquet.gzip"
-    operations = ['INSERT','UPDATE','DELETE']
-    date_cols = ['order_updated_at']
-    run_guid = uuid.uuid4()
-    # file operations
-    fileops = FileOperations(folder_input,folder_output,final_file,run_guid)
-    fileops.check_folders()
-    processor = CsvProcessor(fileops,operations)
-    processor.base_file(all_files[0],date_cols)
-    processor.a_new_file(all_files[1:],date_cols)
+    date_col = 'order_updated_at'
+    processor = CsvProcessor(folder_input,folder_output,final_file)
+    processor.base_file(initial_file,date_col)
+    processor.subsequent_files(other_files,date_col)
 

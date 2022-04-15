@@ -13,20 +13,20 @@ class DfOperations:
         return df
 
     def merge(self,df_base,df_current):
-        df_insert = self.prepare_df(df_current,'INSERT')
+        df_insert = self.filter_df(df_current,'INSERT')
         self.verify_columns(df_base,df_insert)
         df_insert = self.remove_repetions(df_insert)
         print(f"{self.run_guid} - {len(df_insert)} rows are going to be inserted")
         df_base = self.ddloperations.insert(df_base,df_insert)
-        df_update = self.prepare_df(df_current,'UPDATE')
+        df_update = self.filter_df(df_current,'UPDATE')
         print(f"{self.run_guid} - {len(df_update)} rows are going to be updated")
         df_base = self.ddloperations.update(df_base,df_update)
-        df_delete = self.prepare_df(df_current,'DELETE')
+        df_delete = self.filter_df(df_current,'DELETE')
         print(f"{self.run_guid} - {len(df_delete)} rows are going to be deleted")
         df_base = self.ddloperations.delete(df_base,df_delete)
         return df_base
 
-    def prepare_df(self,df_current,operation):
+    def filter_df(self,df_current,operation):
         df_operation = df_current[df_current['operation'] == operation]
         del df_operation['operation']
         return df_operation

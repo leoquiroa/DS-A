@@ -44,7 +44,7 @@ class DdlOperations:
         print(f"{self.run_guid} - DELETE")
         for _, row in df_delete.iterrows():
             t = df_base[df_base['order_id']==row['order_id']]
-            if (row['order_updated_at']>pd.to_datetime(t['order_updated_at'])).bool():
-                df_base = df_base.drop(t.index[0])
+            df_base.loc[t.index[0], "is_order_deleted"] = True
+            print(f"{self.run_guid} - The order {row['order_id']} was marked as deleted")
         return df_base
     

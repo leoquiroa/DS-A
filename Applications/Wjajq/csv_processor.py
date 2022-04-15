@@ -30,4 +30,5 @@ class CsvProcessor:
             df_current = self.dfops.date_conversion(df_current,date_col)
             df_base = self.dfops.merge(df_base,df_current)
             self.fileops.save_parquet(df_base)
+            print(f"{self.run_guid} - The base file has {len(df_base)} rows")
         print(f"{self.run_guid} - End process")

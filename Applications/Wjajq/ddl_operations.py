@@ -33,9 +33,11 @@ class DdlOperations:
         for _, row in df_update.iterrows():
             t = df_base[df_base['order_id']==row['order_id']]
             if (row['order_updated_at']>pd.to_datetime(t['order_updated_at'])).bool():
-                print(f"{self.run_guid} - Update order {row['order_id']}")
+                print(f"{self.run_guid} - Update order {row['order_id']} succesfully")
                 df_base = df_base.drop(t.index[0])
                 df_base = pd.concat([df_base,row.to_frame().transpose()], ignore_index=True)
+            else:
+                print(f"{self.run_guid} - The order {row['order_id']} was not updated")
         return df_base
 
     def delete(self,df_base,df_delete):

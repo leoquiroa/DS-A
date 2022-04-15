@@ -13,44 +13,44 @@ class DfOperations:
         return df
 
     def merge(self,df_base,df_current):
-        list_intersect = self.get_intesection(df_base, df_current)
-        df_update, df_delete = self.is_in(df_current,list_intersect)
-        df_insert = self.is_not_in(df_current,list_intersect)
+        df_insert = df_current[df_current['operation'] == 'INSERT']
+        del df_insert['operation']
+        self.verify_columns(df_base,df_insert)
+        df_insert = self.remove_repetions(df_insert)
+        print(f"{self.run_guid} - {len(df_insert)} rows are going to be inserted")
         df_base = self.ddloperations.insert(df_base,df_insert)
+        df_update = df_current[df_current['operation'] == 'UPDATE']
+        del df_update['operation']
+        print(f"{self.run_guid} - {len(df_update)} rows are going to be updated")
         df_base = self.ddloperations.update(df_base,df_update)
+        df_delete = df_current[df_current['operation'] == 'DELETE']
+        del df_delete['operation']
+        print(f"{self.run_guid} - {len(df_delete)} rows are going to be deleted")
         df_base = self.ddloperations.delete(df_base,df_delete)
         return df_base
 
-    def get_intesection(self,df_base, df_current):
-        df_intersect = pd.merge(df_base, df_current, on=['order_id'], how='inner')
-        return list(df_intersect['order_id'])
+    def verify_columns(self,df_base,df_insert):
+        a = set(df_base.columns)
+        b = set(df_insert.columns)
+        matches = a.intersection(b)
+        old_columns = a.difference(b)
+        new_columns = b.difference(a)
+        if len(matches) > 0:
+            print(f"{self.run_guid} - The matching columns are {len(matches)}")
+        if len(old_columns) > 0:
+            print(f"{self.run_guid} - The columns that are not in the new df are {len(old_columns)} : {old_columns}")
+        if len(new_columns) > 0:
+            print(f"{self.run_guid} - The new columns from the new df are {len(new_columns)} : {new_columns}")
 
-    def is_in(self,df_current,list_intersect):
-        df_op = df_current[df_current['order_id'].isin(list_intersect)]
-        df_update = df_op[df_op['operation'] == 'UPDATE']
-        df_delete = df_op[df_op['operation'] == 'DELETE']
-        df_check = df_op[df_op['operation'] == 'INSERT']
-        if len(df_check) > 0:
-            order_id_list = ','.join([str(x) for x in df_check['order_id']])
-            print(f"{self.run_guid} - Warning, illegal operation for order {order_id_list}")
-        if len(df_update) > 0:
-            print(f"{self.run_guid} - {len(df_update)} rows are going to be updated")
-        if len(df_delete) > 0:
-            print(f"{self.run_guid} - {len(df_delete)} rows are going to be deleted")
-        del df_update['operation']
-        del df_delete['operation']
-        return df_update, df_delete
-
-    def is_not_in(self,df_current,list_intersect):
-        df_op = df_current[~df_current['order_id'].isin(list_intersect)]
-        df_insert = df_op[df_op['operation'] == 'INSERT']
-        df_check = df_op[df_op['operation'] != 'INSERT']
-        if len(df_check) > 0:
-            order_id_list = ','.join([str(x) for x in df_check['order_id']])
-            print(f"{self.run_guid} - Warning, illegal operation for order {order_id_list}")
-        if len(df_insert) > 0:
-            print(f"{self.run_guid} - {len(df_insert)} rows are going to be inserted")
-        del df_insert['operation']
+    def remove_repetions(self,df_insert):
+        df_count = df_insert.groupby(['order_id'])['order_id'].size().reset_index(name='counts')
+        if len(df_count[df_count['counts']>1])==0: return df_insert
+        repetitions = list(df_count[df_count['counts']>1]['order_id'])
+        for element in repetitions:
+            filtered = df_insert[df_insert['order_id']==element]['order_updated_at']
+            del_ix = [x for x in list(filtered.index) if x != filtered.idxmax()]
+            print(f"{self.run_guid} - Remove repeated order {element}")
+            df_insert.drop(del_ix, axis=0, inplace=True)
         return df_insert
 
     
